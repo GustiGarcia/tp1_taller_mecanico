@@ -3,7 +3,7 @@ from models.db import db
 class Client(db.Model):
     __tablename__ = 'client'
 
-    id = db.Column (db.integer, primary_key=True)
+    id = db.Column (db.Integer, primary_key=True)
     name = db.Column (db.String(30), nullable= False)
     email= db.Column (db.String(50), unique=True, nullable=False)
     phone= db.Column(db.String(20), unique=True, nullable=False)
@@ -20,5 +20,4 @@ class Client(db.Model):
             'name': self.name,
             'email': self.email,
             'phone': self.phone
-
         }
