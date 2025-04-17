@@ -18,7 +18,9 @@ with app.app_context():
     from models.client import Client
     db.create_all()
 
-
+@app.route("/")
+def algo():
+    return "<p>Hola Gusti<p>"
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
