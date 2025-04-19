@@ -4,10 +4,17 @@ from models.db import db
 
 client= Blueprint('client', __name__)
 
-@client.route('/api/client') #GET
+@client.route('/api/client', methods=['GET']) #GET
 def get_client():
     clients = Client.query.all()
     return jsonify([client.serialize() for client in clients])
+
+@client.route('/api/client/<id>', methods=['GET'])#busqueda por id
+def get_client_id(id):
+    one_client=Client.query.get(id)
+    if not one_client:
+        return jsonify({'error': 'dueño/a no encontrado'}),404
+    return jsonify(one_client.serialize())
 
 @client.route('/api/client', methods=['POST'])
 def create_client():
@@ -30,7 +37,6 @@ def create_client():
     return jsonify(new_client.serialize()), 201
 
 @client.route('/api/clients', methods=['POST'])
-
 def create_clients():
     data = request.get_json() #toma datos de clientes
     if isinstance(data, list):#verificar si es lista de clientes
@@ -54,4 +60,19 @@ def create_clients():
         return jsonify(clients_added),201 #retorna los clientes creados
     else:
         return jsonify({'error': 'se esperaba lista de clientes'}),400
-    
+
+@client.route('/api/client/<id>', methods=['PUT'])#metodo PUT , se coloca el id en la direccion y se pasa el json
+def update_client(id):
+    update = Client.query.get(id)
+    if not update:
+        return jsonify({'Error': 'no se encontro cliente'}),404
+    new_name=request.json['name']
+    new_email=request.json['email']
+    new_phone=request.json['phone']
+
+    update.name= new_name
+    update.email=new_email
+    update.phone=new_phone
+
+    db.session.commit()
+    return jsonify (update.serialize())
