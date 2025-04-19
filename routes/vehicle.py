@@ -5,7 +5,7 @@ from models.db import db
 
 vehicle= Blueprint('vehicle', __name__)
 
-@vehicle.route('/api/vehicle')
+@vehicle.route('/api/vehicle')#metodo GET
 def get_vehicle():
     vehicles= Vehicle.query.all()
     return jsonify([vehicle.serialize() for vehicle in vehicles])

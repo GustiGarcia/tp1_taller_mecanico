@@ -7,7 +7,7 @@ class Client(db.Model):
     name = db.Column (db.String(30), nullable= False)
     email= db.Column (db.String(50), unique=True, nullable=False)
     phone= db.Column(db.String(20), unique=True, nullable=False)
-    vehicles = db.relationship('Vehicle', backref='client', lazy=True)
+    vehicles = db.relationship('Vehicle', backref='client', lazy=True)#crea clave foranea
 
 
 

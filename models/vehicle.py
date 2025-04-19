@@ -7,7 +7,7 @@ class Vehicle(db.Model):
     id= db.Column(db.Integer, primary_key=True)
     marca= db.Column(db.String(20), nullable=False)
     modelo=db.Column (db.String(20), nullable=False)
-    client_id=db.Column(db.Integer,db.ForeignKey('client.id'), nullable=False)
+    client_id=db.Column(db.Integer,db.ForeignKey('client.id'), nullable=False)#relacion con tabla client
 
     def __init__(self, marca, modelo, client_id):
         self.marca=marca

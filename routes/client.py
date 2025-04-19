@@ -4,7 +4,7 @@ from models.db import db
 
 client= Blueprint('client', __name__)
 
-@client.route('/api/client')
+@client.route('/api/client') #GET
 def get_client():
     clients = Client.query.all()
     return jsonify([client.serialize() for client in clients])
