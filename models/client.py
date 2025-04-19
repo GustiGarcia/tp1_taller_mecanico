@@ -7,6 +7,8 @@ class Client(db.Model):
     name = db.Column (db.String(30), nullable= False)
     email= db.Column (db.String(50), unique=True, nullable=False)
     phone= db.Column(db.String(20), unique=True, nullable=False)
+    vehicles = db.relationship('Vehicle', backref='client', lazy=True)
+
 
 
     def __init__(self,name, email, phone):

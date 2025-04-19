@@ -1,10 +1,13 @@
 from flask import Flask
 from routes.client import client
+from routes.vehicle import vehicle
 from models.db import db
 from config.config import DATABASE_CONNECTION_URI
 
 app = Flask (__name__)
 
+app.register_blueprint(client)
+app.register_blueprint(vehicle)
 
 app.config["SQLALCHEMY_DATABASE_URI"]= DATABASE_CONNECTION_URI
 
@@ -16,6 +19,7 @@ app.register_blueprint(client)
 
 with app.app_context():
     from models.client import Client
+    from models.vehicle import Vehicle
     db.create_all()
 
 @app.route("/")
