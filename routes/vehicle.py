@@ -10,6 +10,7 @@ def get_vehicle():
     vehicles= Vehicle.query.all()
     return jsonify([vehicle.serialize() for vehicle in vehicles])
 
+
 @vehicle.route('/api/add_vehicle', methods=['POST'])
 def create_vehicle():#funcion declarada
     data= request.get_json()#toma el contenido y lo convierte para que lo lea python

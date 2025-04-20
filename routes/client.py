@@ -9,14 +9,14 @@ def get_client():
     clients = Client.query.all()
     return jsonify([client.serialize() for client in clients])
 
-@client.route('/api/client/<id>', methods=['GET'])#busqueda por id
+@client.route('/api/client/<id>', methods=['GET'])# GET BY ID / busqueda por id
 def get_client_id(id):
     one_client=Client.query.get(id)
     if not one_client:
         return jsonify({'error': 'dueño/a no encontrado'}),404
     return jsonify(one_client.serialize())
 
-@client.route('/api/client', methods=['POST'])
+@client.route('/api/client', methods=['POST']) #POST INDIVIDUAL
 def create_client():
     data = request.get_json() #Tomar datos enviados en formato json
     name = data.get('name')
@@ -36,7 +36,7 @@ def create_client():
 
     return jsonify(new_client.serialize()), 201
 
-@client.route('/api/clients', methods=['POST'])
+@client.route('/api/clients', methods=['POST']) # POST GRUPAL
 def create_clients():
     data = request.get_json() #toma datos de clientes
     if isinstance(data, list):#verificar si es lista de clientes
@@ -76,3 +76,31 @@ def update_client(id):
 
     db.session.commit()
     return jsonify (update.serialize())
+
+@client.route('/api/client/<id>', methods=(['PATCH']))
+def patch_client(id):
+    patch = Client.query.get(id)
+    if not patch:
+        return jsonify({'error': 'no se encontro cliente'}),404
+    
+    data = request.json
+    if 'name' in data:
+        patch.name= data['name']
+    if 'email' in data:
+        patch.email = data['email']
+    if 'phone' in data:
+        patch.phone= data['phone']
+    
+    db.session.commit()
+    return jsonify(patch.serialize())
+
+
+@client.route('/api/client/<id>', methods = ['DELETE']) #Funciona con cliente sin vehiculo, revisar para eliminar vehiculos tambien
+def delete_client(id):
+    delete = Client.query.get(id)
+    if not delete:
+        return jsonify({'error': 'cliente no encontrado/registrado'}),404
+    db.session.delete(delete)
+    db.session.commit()
+
+    return jsonify(delete.serialize())
