@@ -23,7 +23,7 @@ def create_vehicle():#funcion declarada
     vehicles_added=[]
 
 
-    for vehicle_data in data:#buvle for para iterar sobre cada vehiculo
+    for vehicle_data in data:#bucle for para iterar sobre cada vehiculo
         marca= vehicle_data.get('marca')
         modelo=vehicle_data.get('modelo')  
         client_id=vehicle_data.get('client_id')
@@ -41,3 +41,34 @@ def create_vehicle():#funcion declarada
         vehicles_added.append(new_vehicle)
     db.session.commit()
     return jsonify([v.serialize() for v in vehicles_added]),201
+
+
+@vehicle.route('/api/vehicle/<id>', methods=['PUT'])#metodo PUT , se coloca el id en la direccion y se pasa el json
+def update_vehicle(id):
+    update = Vehicle.query.get(id)
+    if not update:
+        return jsonify({'Error': 'no se encontro Vehiculo'}),404
+    new_marca=request.json['marca']
+    new_modelo=request.json['modelo']
+
+    update.marca=new_marca
+    update.modelo=new_modelo
+
+    db.session.commit()
+    return jsonify (update.serialize())
+
+
+@vehicle.route('/api/vehicle/<id>', methods=(['PATCH']))
+def patch_client(id):
+    patch = Vehicle.query.get(id)
+    if not patch:
+        return jsonify({'error': 'no se encontro Vehiculo'}),404
+    
+    data = request.json
+    if 'marca' in data:
+        patch.marca= data['marca']
+    if 'modelo' in data:
+        patch.modelo = data['modelo']
+    
+    db.session.commit()
+    return jsonify(patch.serialize())
