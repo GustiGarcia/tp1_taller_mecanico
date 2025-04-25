@@ -72,3 +72,15 @@ def patch_client(id):
     
     db.session.commit()
     return jsonify(patch.serialize())
+
+
+
+@vehicle.route('/api/vehicle/<id>', methods = ['DELETE']) #Funciona con cliente sin vehiculo, revisar para eliminar vehiculos tambien
+def delete_vehicle(id):
+    delete = Vehicle.query.get(id)
+    if not delete:
+        return jsonify({'error': 'Auto no Encontrado'}),404
+    db.session.delete(delete)
+    db.session.commit()
+
+    return jsonify("Borrado")
